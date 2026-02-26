@@ -1,0 +1,24 @@
+name: Kyverno Policy Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  policy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Kyverno CLI
+        uses: kyverno/action-install-cli@v0.2.0
+
+      - name: Run Kyverno apply
+        run: |
+          echo "Running Kyverno policies against manifests..."
+          kyverno apply policies/ -r manifests/
